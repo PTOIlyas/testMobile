@@ -11,6 +11,20 @@ import {
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 
+// const { getDefaultConfig } = require("expo/metro-config");
+
+// module.exports = (() => {
+//   const config = getDefaultConfig(__dirname);
+
+//   config.transformer = {
+//     babelTransformerPath: require.resolve("react-native-svg-transformer"),
+//   };
+//   config.resolver.assetExts = config.resolver.assetExts.filter((ext: string) => ext !== "svg");
+//   config.resolver.sourceExts.push("svg");
+
+//   return config;
+// })();
+
 // -----------------------------
 // Данные для первой карточки (ниже)
 // -----------------------------
@@ -22,7 +36,7 @@ const DATA = [
       "https://cdn04.qazsporttv.kz/720x/2025/11/25/1764070207_6925933f26801.jpg",
     author: "Admin",
     date: "2025-02-10",
-    content: "Full article text example...",
+    content: "7 декабря 2025 года чемпион мира в среднем весе по версиям WBO и IBF Жанибек Алимханулы проведёт объединительный бой против чемпиона мира по версии WBA, 42-летнего Эрисланди Лары. На кону будет три чемпионских пояса.",
     url: "https://google.com",
   },
 ];
@@ -79,12 +93,22 @@ const products: Record<string, Product[]> = {
       content: "Full article text example...",
       url: "https://google.com",
     },
+    {
+      id: 4,
+      title: "Breaking News",
+      image:
+        "https://sportnews.kz/static/n/miiquu0dacjyrxowlhkorg.webp.desktop.webp",
+      author: "Admin",
+      date: "2025-02-10",
+      content: "Full article text example...",
+      url: "https://google.com",
+    },
   ],
 
   // другие блоки — аналогично
   "Наука и технологии": [
     {
-      id: 4,
+      id: 5,
       title: "Breaking News",
       image:
         "https://cdn.iz.ru/sites/default/files/styles/420x275/public/article-2025-11/ERS00458%20copy%20%281%29%20copy.jpg?itok=gtzA5Pdb",
@@ -94,7 +118,27 @@ const products: Record<string, Product[]> = {
       url: "https://google.com",
     },
     {
-      id: 5,
+      id: 6,
+      title: "Breaking News",
+      image:
+        "https://api.amurobl.tv/upload/resize_cache/iblock/d00/640_424_2/sfphi6v86j9pe5cyugu27zgl816zj7mv.jpeg",
+      author: "Admin",
+      date: "2025-02-10",
+      content: "Full article text example...",
+      url: "https://google.com",
+    },
+    {
+      id: 7,
+      title: "Breaking News",
+      image:
+        "https://cdn.iz.ru/sites/default/files/styles/420x275/public/article-2025-11/ERS00458%20copy%20%281%29%20copy.jpg?itok=gtzA5Pdb",
+      author: "Admin",
+      date: "2025-02-10",
+      content: "Full article text example...",
+      url: "https://google.com",
+    },
+    {
+      id: 8,
       title: "Breaking News",
       image:
         "https://api.amurobl.tv/upload/resize_cache/iblock/d00/640_424_2/sfphi6v86j9pe5cyugu27zgl816zj7mv.jpeg",
@@ -107,10 +151,30 @@ const products: Record<string, Product[]> = {
 
   Политика: [
     {
-      id: 6,
+      id: 9,
       title: "Breaking News",
       image:
         "https://www.zakon.kz/pbi/WEBP/2025-11-28/file-ed79a08d-65c8-4487-9607-ae8fada4741c/800x450.webp",
+      author: "Admin",
+      date: "2025-02-10",
+      content: "Full article text example...",
+      url: "https://google.com",
+    },
+    {
+      id: 10,
+      title: "Breaking News",
+      image:
+        "https://www.zakon.kz/pbi/WEBP/2025-11-28/file-ed79a08d-65c8-4487-9607-ae8fada4741c/800x450.webp",
+      author: "Admin",
+      date: "2025-02-10",
+      content: "Full article text example...",
+      url: "https://google.com",
+    },
+    {
+      id: 11,
+      title: "Breaking News",
+      image:
+        "https://cdn.iz.ru/sites/default/files/styles/420x275/public/article-2025-11/ERS00458%20copy%20%281%29%20copy.jpg?itok=gtzA5Pdb",
       author: "Admin",
       date: "2025-02-10",
       content: "Full article text example...",
@@ -120,7 +184,7 @@ const products: Record<string, Product[]> = {
 
   Происшествия: [
     {
-      id: 7,
+      id: 12,
       title: "Breaking News",
       image:
         "https://rus.baq.kz/storage/storage/news/2025/11/25/mainphoto/196919/350x234_PLJw4IyeFFJOW5zP2O2d7nyMLmnplRoWK2ptRrHs.png",
@@ -130,7 +194,7 @@ const products: Record<string, Product[]> = {
       url: "https://google.com",
     },
     {
-      id: 8,
+      id: 13,
       title: "Breaking News",
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT72Vb_CM8nvH83KE3vcQ14koukoCmTuMIcTA&s",
@@ -140,10 +204,20 @@ const products: Record<string, Product[]> = {
       url: "https://google.com",
     },
     {
-      id: 9,
+      id: 14,
       title: "Breaking News",
       image:
         "https://www.kt.kz/neofiles/serve-image/692801a216b84891c5ddf2c2/738x473/c1",
+      author: "Admin",
+      date: "2025-02-10",
+      content: "Full article text example...",
+      url: "https://google.com",
+    },
+    {
+      id: 15,
+      title: "Breaking News",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT72Vb_CM8nvH83KE3vcQ14koukoCmTuMIcTA&s",
       author: "Admin",
       date: "2025-02-10",
       content: "Full article text example...",
@@ -155,8 +229,19 @@ const products: Record<string, Product[]> = {
 export default function HomeScreen() {
   const router = useRouter();
 
-  const [text, onChangeText] = React.useState("Поиск Новостей");
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [selectedCategory, setSelectedCategory] = useState<
+    keyof typeof products
+  >(categories[0]);
+
+  // Все товары одной переменной для поиска
+  const allProducts: Product[] = Object.values(products).flat();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredProducts = searchQuery
+    ? allProducts.filter((item) =>
+        item.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : products[selectedCategory]; // если поиск пустой — показываем выбранную категорию
 
   return (
     <>
@@ -164,11 +249,21 @@ export default function HomeScreen() {
       {/* Верхний блок со строкой поиска */}
       {/* ----------------------------- */}
       <View style={styles.fon}>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-        />
+        <View style={styles.input}>
+          <Text style={styles.searchIcon}>🔍</Text>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Поиск..."
+            placeholderTextColor="#999"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery("")}>
+              <Text style={styles.clearIcon}>✖</Text>
+            </TouchableOpacity>
+          )}
+        </View>
 
         {/* Оранжевая кнопка справа от поиска */}
         <View style={styles.filterBox}></View>
@@ -181,14 +276,14 @@ export default function HomeScreen() {
         <View style={styles.CategoryTabs}>
           {/* Горизонтальная прокрутка категорий */}
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {categories.map((category, index) => (
+            {categories.map((category) => (
               <TouchableOpacity
-                key={index}
+                key={category}
                 style={[
                   styles.categoryButton,
-                  selectedCategory === category && styles.activeButton,
+                  selectedCategory === category && styles.activeButton, // активная категория
                 ]}
-                onPress={() => setSelectedCategory(category)} // смена категории
+                onPress={() => setSelectedCategory(category)}
               >
                 <Text
                   style={[
@@ -205,35 +300,37 @@ export default function HomeScreen() {
           {/* ----------------------------- */}
           {/* Товары выбранной категории */}
           {/* ----------------------------- */}
-          <View style={styles.productsGrid}>
-            {products[selectedCategory]?.map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                style={styles.productItem}
-                onPress={() =>
-                  router.push({
-                    pathname: "/article/article-detail",
-                    params: { article: JSON.stringify(item) },
-                  })
-                }
-              >
-                {item.image && (
-                  <Image
-                    source={{ uri: item.image }}
-                    style={styles.imageProduct}
-                  />
-                )}
-
-                <View style={styles.textBox}>
-                  <Text style={styles.productTitle}>{item.title}</Text>
-
-                  <Text style={styles.meta}>
-                    {item.author} • {item.date}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.productsGrid}>
+              {filteredProducts?.map((item) => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={styles.productItem}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/article/article-detail",
+                      params: { article: JSON.stringify(item) },
+                    })
+                  }
+                >
+                  {item.image && (
+                    <Image
+                      source={{ uri: item.image }}
+                      style={styles.imageProduct}
+                    />
+                  )}
+                  <View style={styles.textBox}>
+                    <Text style={styles.productTitle}>{item.title}</Text>
+                    {item.author && item.date && (
+                      <Text style={styles.meta}>
+                        {item.author} • {item.date}
+                      </Text>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
         </View>
       </View>
 
@@ -259,6 +356,23 @@ export default function HomeScreen() {
           )}
         />
       </View>
+
+      <View style={styles.bottomTab}>
+        <TouchableOpacity
+          onPress={() =>
+            router.push({
+              pathname: "/article/article-detail",
+            })
+          }
+          style={styles.bottomButton}
+        >
+          <Text>🎁</Text>
+          {/* <Image source={require('/Users/Talshin/Desktop/Test_project/testMobile/mobile/assets/images/homeIcon.svg')} style={styles.image}/> */}
+        </TouchableOpacity>
+        <Text>🔍</Text>
+        <Text>🛒</Text>
+        <Text>👤</Text>
+      </View>
     </>
   );
 }
@@ -276,8 +390,10 @@ const styles = StyleSheet.create({
     padding: 20,
     height: 240,
   },
-
+  
   input: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#353535",
     borderRadius: 10,
     width: 241,
@@ -285,6 +401,21 @@ const styles = StyleSheet.create({
     margin: 12,
     padding: 20,
     top: -40,
+  },
+
+  searchIcon: {
+    fontSize: 12,
+    marginRight: 6,
+  },
+  clearIcon: {
+    fontSize: 12,
+    marginLeft: 8,
+    color: "#666",
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#000",
   },
 
   filterBox: {
@@ -345,6 +476,7 @@ const styles = StyleSheet.create({
 
   categoryButton: {
     paddingHorizontal: 15,
+    marginBottom: 10,
     paddingVertical: 8,
     backgroundColor: "#ddd",
     borderRadius: 8,
@@ -367,9 +499,9 @@ const styles = StyleSheet.create({
   productsGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    paddingVertical: 10,
     paddingHorizontal: 10,
-    top: 20,
+    gap: 20,
   },
 
   productItem: {
@@ -403,5 +535,23 @@ const styles = StyleSheet.create({
 
   meta: {
     color: "#555",
+  },
+
+  bottomTab: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 90,
+    backgroundColor: "#1A1A1A",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+  },
+
+  bottomButton: {
+    height: 30,
   },
 });
