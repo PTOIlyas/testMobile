@@ -7,10 +7,15 @@ import {
   StyleSheet,
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { WebView } from "react-native-webview";
+import { useFavorites } from "../../../favorites-context";
 
 export default function ArticleDetail() {
+  const { addToFavorites } = useFavorites();
+  const router = useRouter();
+
   // Получаем параметры из роутера (данные статьи)
   const { article } = useLocalSearchParams();
 
@@ -71,12 +76,22 @@ export default function ArticleDetail() {
         <View style={styles.bottomTop}>
           <View>
             <Text style={{ fontSize: 18 }}>Price</Text>
-            <Text style={{ fontSize: 25, fontWeight: "bold", color: "#B14409" }}>
+            <Text
+              style={{ fontSize: 25, fontWeight: "bold", color: "#B14409" }}
+            >
               4.5
             </Text>
           </View>
           <View>
-            <TouchableOpacity style={styles.Buttonfav} onPress={() => setFav(!fav)}>
+            <TouchableOpacity
+              style={styles.Buttonfav}
+              onPress={() => {
+                router.push({
+                  pathname: "/(tabs)/favorites/FavoritesScreen",
+                });
+                addToFavorites(data);
+              }}
+            >
               <Text style={styles.favButtonText}>В избранное</Text>
             </TouchableOpacity>
           </View>
@@ -105,14 +120,42 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     marginVertical: 15,
   },
-  back: { fontSize: 18 },
-  headertitle: { fontSize: 18, fontWeight: "500" },
-  headerIcon: { fontSize: 18 },
-  image: { width: 345, height: 202, borderRadius: 12 },
-  titleBox: { paddingVertical: 5, justifyContent: "flex-start", gap: 5 },
-  titile: { fontSize: 22, fontWeight: "bold", marginTop: 15 },
-  subtitle: { fontSize: 15, color: "#8d8d8dff" },
-  separator: { height: 1.5, backgroundColor: "#E3E3E3", marginVertical: 20, width: "90%", marginLeft: 15 },
+  back: {
+    fontSize: 18,
+  },
+  headertitle: {
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  headerIcon: {
+    fontSize: 18,
+  },
+  image: {
+    width: 345,
+    height: 202,
+    borderRadius: 12,
+  },
+  titleBox: {
+    paddingVertical: 5,
+    justifyContent: "flex-start",
+    gap: 5,
+  },
+  titile: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginTop: 15,
+  },
+  subtitle: {
+    fontSize: 15,
+    color: "#8d8d8dff",
+  },
+  separator: {
+    height: 1.5,
+    backgroundColor: "#E3E3E3",
+    marginVertical: 20,
+    width: "90%",
+    marginLeft: 15,
+  },
   webButton: {
     alignItems: "center",
     justifyContent: "center",
@@ -130,7 +173,11 @@ const styles = StyleSheet.create({
     width: 170,
     height: 30,
   },
-  webButtonText: { fontSize: 15, fontWeight: "bold", color: "white" },
+  webButtonText: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "white",
+  },
   bottomTop: {
     alignItems: "center",
     justifyContent: "space-between",
@@ -146,5 +193,9 @@ const styles = StyleSheet.create({
     height: 65,
     backgroundColor: "#B14409",
   },
-  favButtonText: { fontSize: 20, fontWeight: "bold", color: "white" },
+  favButtonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
+  },
 });

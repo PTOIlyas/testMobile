@@ -361,7 +361,7 @@ export default function HomeScreen() {
         <TouchableOpacity
           onPress={() =>
             router.push({
-              pathname: "/article/article-detail",
+              pathname: "/(tabs)/favorites/FavoritesScreen",
             })
           }
           style={styles.bottomButton}
