@@ -2,6 +2,7 @@ import React from "react";
 import { Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { NewsArticle } from "@/types/news";
+import { View } from "react-native-reanimated/lib/typescript/Animated";
 
 interface NewsCardProps {
   article: NewsArticle;
@@ -11,7 +12,6 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
   const router = useRouter();
 
   const openDetail = () => {
-    // Вместо router.push(...)
     router.push({
       pathname: '/news/[id]',
       params: { id: encodeURIComponent(article.url) },
@@ -20,32 +20,61 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
   };
 
   return (
-    <TouchableOpacity onPress={openDetail} style={styles.container}>
-      <Text style={styles.title}>{article.title}</Text>
-
-      {article.image || article.urlToImage ? (
+    <TouchableOpacity
+      style={styles.productItem}
+      onPress={openDetail}
+    >
+      {article.image && (
         <Image
-          source={{ uri: article.image ?? article.urlToImage ?? undefined }}
-          style={styles.image}
+          source={{ uri: article.image }}
+          style={styles.imageProduct}
         />
-      ) : null}
-
-      <Text style={styles.description}>{article.description}</Text>
-      <Text style={styles.date}>
-        {new Date(article.publishedAt).toLocaleDateString()}
-      </Text>
+      )}
+      <View style={styles.textBox}>
+        <Text style={styles.productTitle}>{article.title}</Text>
+        {article.source.name && article.publishedAt && (
+          <Text style={styles.meta}>
+            {article.source.name} • {article.publishedAt}
+          </Text>
+        )}
+      </View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 12,
-    borderBottomWidth: 1,
-    borderColor: "#eee",
+  productItem: {
+    width: 165,
+    height: 180,
+    padding: 10,
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
   },
-  title: { fontWeight: "700", marginBottom: 6, fontSize: 16 },
-  image: { width: "100%", height: 180, borderRadius: 8, marginBottom: 8 },
-  description: { color: "#444", marginBottom: 6 },
-  date: { color: "#888", fontSize: 12 },
+
+  imageProduct: {
+    width: "100%",
+    height: 120,
+    borderRadius: 16,
+  },
+
+  textBox: {
+    top: 5,
+    justifyContent: "flex-start",
+  },
+
+  productTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+
+  meta: {
+    color: "#555",
+  },
 });
+
+

@@ -5,6 +5,9 @@ export interface NewsArticle {
   image?: string | null;    
   urlToImage?: string | null;  
   publishedAt: string;
+  source:{
+    name:string
+  }
 }
 
 

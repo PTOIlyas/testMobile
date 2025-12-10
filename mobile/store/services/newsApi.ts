@@ -1,20 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { EXPO_PUBLIC_NEWS_API_KEY } from '@env';
+import { NewsResponse } from '@/types/news';
 
 const apiKey = EXPO_PUBLIC_NEWS_API_KEY;
 
-export interface GNewsArticle {
-  title: string;
-  description: string;
-  url: string;
-  image: string | null;
-  publishedAt: string;
-}
-
-export interface GNewsResponse {
-  totalArticles: number;
-  articles: GNewsArticle[];
-}
 
 export const newsApi = createApi({
   reducerPath: 'newsApi',
@@ -24,7 +13,7 @@ export const newsApi = createApi({
   }),
 
   endpoints: (builder) => ({
-    getNews: builder.query<GNewsResponse, { page?: number; query?: string }>({
+    getNews: builder.query<NewsResponse, { page?: number; query?: string }>({
       query: ({ page = 1, query = "technology" }) => ({
         url: 'search',
         params: {
@@ -32,13 +21,27 @@ export const newsApi = createApi({
           max: 10,
           page,
           lang: "en",
-          token: apiKey,  // Или apikey, если требует API (проверь)
+          token: apiKey,
         },
       }),
 
-      transformResponse: (response: any) => {
+     
+      transformResponse: (response: any): NewsResponse => {
         console.log("🔥 GNEWS RESPONSE:", response);
-        return response;
+
+        return {
+          totalArticles: response.totalArticles,
+          articles: response.articles.map((a: any) => ({
+            title: a.title,
+            description: a.description,
+            url: a.url,
+            image: a.image ?? null,
+            publishedAt: a.publishedAt,
+            source: {
+              name: a.source?.name ?? "Unknown",
+            },
+          })),
+        };
       },
     }),
   }),
