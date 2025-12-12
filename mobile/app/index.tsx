@@ -178,7 +178,7 @@ export default function NewsListScreen() {
         <TouchableOpacity
           onPress={() =>
             router.push({
-              pathname: "/favorites/FavoritesScreen",
+              pathname: "/favorites",
             })
           }
           style={styles.bottomButton}
