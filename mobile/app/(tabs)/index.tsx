@@ -250,7 +250,8 @@ export default function HomeScreen() {
       {/* ----------------------------- */}
       <View style={styles.fon}>
         <View style={styles.input}>
-          <Text style={styles.searchIcon}>🔍</Text>
+          <Image source={require('../../assets/images/SolidIcon.svg')} style={styles.searchIcon}/>
+          {/* <Text style={styles.searchIcon}>🔍</Text> */}
           <TextInput
             style={styles.searchInput}
             placeholder="Поиск..."
@@ -404,6 +405,7 @@ const styles = StyleSheet.create({
   },
 
   searchIcon: {
+    color: 'white',
     fontSize: 12,
     marginRight: 6,
   },
