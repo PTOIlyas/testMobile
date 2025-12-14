@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Image, View, FlatList, ActivityIndicator, Text, RefreshControl, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView, Image, View, FlatList, ActivityIndicator, Text, RefreshControl, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { useGetNewsQuery } from "@/store/services/newsApi";
 import { NewsCard } from "@/components/NewsCard";
 import { NewsArticle } from "@/types/news";
-import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
 import { router } from "expo-router";
 
 export default function NewsListScreen() {
@@ -12,14 +11,14 @@ export default function NewsListScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("sports")
 
+
   const queryValue = searchQuery.length > 0 ? `${selectedCategory} ${searchQuery}` : selectedCategory;
 
 
   const { data, error, isLoading, refetch, isFetching } = useGetNewsQuery(
-    {
-      page,
-      query: queryValue
-    });
+    { page, query: queryValue },
+  );
+
 
   const topNews = data?.articles?.[0]
 
@@ -38,10 +37,12 @@ export default function NewsListScreen() {
     }
   }, [data, page]);
 
-  useEffect(() => {
-    setPage(1);
-    setArticles([]);
-  }, [searchQuery]);
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+  };
+
+
 
   if (isLoading && page === 1) {
     return (
@@ -84,7 +85,7 @@ export default function NewsListScreen() {
             placeholder="Поиск..."
             placeholderTextColor="#999"
             value={searchQuery}
-            onChangeText={setSearchQuery}
+            onChangeText={handleSearch}
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery("")}>
@@ -128,7 +129,7 @@ export default function NewsListScreen() {
 
       <FlatList
         data={articles}
-        keyExtractor={(item) => item.url}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => <NewsCard article={item} />}
 
         onEndReached={() => setPage((p) => p + 1)}
@@ -161,7 +162,7 @@ export default function NewsListScreen() {
               router.push({
                 pathname: '/news/[id]',
                 params: {
-                  id: encodeURIComponent(topNews.url),
+                  id: encodeURIComponent(topNews.id),
                   article: JSON.stringify(topNews)
                 }
               })

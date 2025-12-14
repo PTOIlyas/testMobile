@@ -1,8 +1,7 @@
 import React from "react";
-import { Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { NewsArticle } from "@/types/news";
-import { View } from "react-native-reanimated/lib/typescript/Animated";
 
 interface NewsCardProps {
   article: NewsArticle;
@@ -14,7 +13,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
   const openDetail = () => {
     router.push({
       pathname: '/news/[id]',
-      params: { id: encodeURIComponent(article.url) },
+      params: { id: encodeURIComponent(article.id) },
     });
 
   };

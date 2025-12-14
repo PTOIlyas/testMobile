@@ -11,8 +11,12 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <FavoritesProvider>
-          <Stack screenOptions={{ headerShown: false }} />
-          <StatusBar style="auto" />
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="favorites/index" options={{ headerShown: false }} />
+          <Stack.Screen name="news/[id]" options={{ headerShown: false }} />
+        </Stack>
+        <StatusBar style="auto" />
       </FavoritesProvider>
     </Provider>
   );

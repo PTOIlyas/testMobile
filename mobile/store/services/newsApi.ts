@@ -1,8 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { EXPO_PUBLIC_NEWS_API_KEY } from '@env';
 import { NewsResponse } from '@/types/news';
 
-const apiKey = EXPO_PUBLIC_NEWS_API_KEY;
+const apiKey = process.env.EXPO_PUBLIC_NEWS_API_KEY;
 
 
 export const newsApi = createApi({
@@ -27,11 +26,11 @@ export const newsApi = createApi({
 
      
       transformResponse: (response: any): NewsResponse => {
-        console.log("🔥 GNEWS RESPONSE:", response);
 
         return {
           totalArticles: response.totalArticles,
           articles: response.articles.map((a: any) => ({
+            id: a.id.toString(),
             title: a.title,
             description: a.description,
             url: a.url,
