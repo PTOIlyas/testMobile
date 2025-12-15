@@ -12,6 +12,16 @@ import React, { useState } from "react";
 import { useFavorites } from "../../favorites-context";
 import { NewsArticle } from "@/types/news";
 import { router } from "expo-router";
+import {
+  SearchIcon,
+  ClearIcon,
+  FilterIcon,
+  HomeIcon,
+  SettingIcon,
+  BellIcon,
+  HeartIcon,
+  ExitIcon,
+} from "@/assets/icons";
 
 const categories = ["Спорт", "Наука", "Технологии", "Политика", "Мир"];
 
@@ -38,25 +48,42 @@ export default function FavoritesScreen() {
     <View style={styles.screen}>
       {/* HEADER */}
       <View style={styles.header}>
-        <Text style={styles.headertitle}>Избранное</Text>
+        <View style={styles.headerBaza}>
+          <TouchableOpacity
+            onPress={() =>
+              router.push({
+                pathname: "/",
+              })
+            }
+          >
+            <ExitIcon width={25} height={25} fill="white" />
+          </TouchableOpacity>
+          <Text style={styles.headertitle}>Избранное</Text>
+        </View>
 
         <View style={styles.input}>
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery("")}>
+              <ClearIcon width={20} height={20} fill="black" />
+            </TouchableOpacity>
+          )}
           <TextInput
             style={styles.searchInput}
             placeholder="Поиск..."
+            placeholderTextColor="#424242ff"
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
-          {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={() => setSearchQuery("")}>
-              <Text style={styles.clearIcon}>✖</Text>
-            </TouchableOpacity>
-          )}
           <Text style={styles.searchIcon}>🔍</Text>
+          <SearchIcon width={25} height={25} fill="#424242ff" />
         </View>
 
         {/* Category tabs */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.CategoryTabs}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.CategoryTabs}
+        >
           {categories.map((category) => (
             <TouchableOpacity
               key={category}
@@ -136,9 +163,15 @@ const styles = StyleSheet.create({
 
   header: {
     backgroundColor: "#fff",
+    paddingTop: 60,
     padding: 20,
     paddingBottom: 10,
     elevation: 6,
+  },
+
+  headerBaza: {
+    gap: 80,
+    flexDirection: "row",
   },
 
   headertitle: {
@@ -161,7 +194,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: "#000",
+    color: "#000000ff",
   },
 
   searchIcon: {
@@ -169,11 +202,6 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
 
-  clearIcon: {
-    fontSize: 14,
-    marginRight: 8,
-    color: "#555",
-  },
 
   CategoryTabs: {
     marginTop: 15,

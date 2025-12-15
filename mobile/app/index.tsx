@@ -1,26 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Image, View, FlatList, ActivityIndicator, Text, RefreshControl, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  Image,
+  View,
+  FlatList,
+  ActivityIndicator,
+  Text,
+  RefreshControl,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { useGetNewsQuery } from "@/store/services/newsApi";
 import { NewsCard } from "@/components/NewsCard";
 import { NewsArticle } from "@/types/news";
 import { router } from "expo-router";
+import {
+  SearchIcon,
+  ClearIcon,
+  FilterIcon,
+  HomeIcon,
+  SettingIcon,
+  BellIcon,
+  HeartIcon,
+} from "@/assets/icons";
 
 export default function NewsListScreen() {
   const [page, setPage] = useState(1);
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("sports")
+  const [selectedCategory, setSelectedCategory] = useState<string>("sports");
 
+  const queryValue =
+    searchQuery.length > 0
+      ? `${selectedCategory} ${searchQuery}`
+      : selectedCategory;
 
-  const queryValue = searchQuery.length > 0 ? `${selectedCategory} ${searchQuery}` : selectedCategory;
+  const { data, error, isLoading, refetch, isFetching } = useGetNewsQuery({
+    page,
+    query: queryValue,
+  });
 
-
-  const { data, error, isLoading, refetch, isFetching } = useGetNewsQuery(
-    { page, query: queryValue },
-  );
-
-
-  const topNews = data?.articles?.[0]
+  const topNews = data?.articles?.[0];
 
   const categories = [
     { key: "sports", label: "Спорт" },
@@ -30,19 +51,17 @@ export default function NewsListScreen() {
     { key: "world", label: "Мир" },
   ];
 
-
   useEffect(() => {
     if (data?.articles) {
-      setArticles(prev => page === 1 ? data.articles : [...prev, ...data.articles]);
+      setArticles((prev) =>
+        page === 1 ? data.articles : [...prev, ...data.articles]
+      );
     }
   }, [data, page]);
-
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
   };
-
-
 
   if (isLoading && page === 1) {
     return (
@@ -68,7 +87,7 @@ export default function NewsListScreen() {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Новостей нет</Text>
-        <Text onPress={() => refetch()} style={{ color: 'blue', marginTop: 8 }}>
+        <Text onPress={() => refetch()} style={{ color: "blue", marginTop: 8 }}>
           Повторить загрузку
         </Text>
       </View>
@@ -79,7 +98,7 @@ export default function NewsListScreen() {
     <>
       <View style={styles.fon}>
         <View style={styles.input}>
-          <Text style={styles.searchIcon}>🔍</Text>
+          <SearchIcon width={25} height={25} fill="white" />
           <TextInput
             style={styles.searchInput}
             placeholder="Поиск..."
@@ -89,19 +108,21 @@ export default function NewsListScreen() {
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery("")}>
-              <Text style={styles.clearIcon}>✖</Text>
+              <ClearIcon width={25} height={25} fill="white" />
             </TouchableOpacity>
           )}
         </View>
 
         {/* Оранжевая кнопка справа от поиска */}
-        <View style={styles.filterBox}></View>
+        <View style={styles.filterBox}>
+          <FilterIcon width={30} height={30} fill="white" />
+        </View>
       </View>
 
       {/* сюда наверное */}
       <View style={styles.main}>
+        {/* Категории — НЕ скроллятся */}
         <View style={styles.CategoryTabs}>
-
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {categories.map((category) => (
               <TouchableOpacity
@@ -124,47 +145,38 @@ export default function NewsListScreen() {
             ))}
           </ScrollView>
         </View>
+
+        {/* ⬇️ СКРОЛЛ ОБРЕЗАН */}
+        <View style={styles.listContainer}>
+          <FlatList
+            data={articles}
+            numColumns={2}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={styles.cardWrapper}>
+                <NewsCard article={item} />
+              </View>
+            )}
+            ListHeaderComponent={<View style={{ height: 20 }} />} // 👈 отступ
+            contentContainerStyle={styles.listContent}
+            onEndReached={() => setPage((p) => p + 1)}
+            onEndReachedThreshold={0.5}
+          />
+        </View>
       </View>
 
-
-      <FlatList
-        data={articles}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <NewsCard article={item} />}
-
-        onEndReached={() => setPage((p) => p + 1)}
-        onEndReachedThreshold={0.5}
-
-        refreshControl={
-          <RefreshControl
-            refreshing={isFetching}
-            onRefresh={() => {
-              setPage(1);
-              setArticles([]);
-              refetch();
-            }}
-          />
-        }
-
-        ListFooterComponent={
-          isFetching && page > 1 ? (
-            <ActivityIndicator style={{ marginVertical: 16 }} />
-          ) : null
-        }
-      />
       <View style={styles.container}>
-
         {isLoading && <ActivityIndicator size="large" />}
 
         {!isLoading && topNews && (
           <TouchableOpacity
             onPress={() =>
               router.push({
-                pathname: '/news/[id]',
+                pathname: "../news/[id]",
                 params: {
                   id: encodeURIComponent(topNews.id),
-                  article: JSON.stringify(topNews)
-                }
+                  article: JSON.stringify(topNews),
+                },
               })
             }
             style={styles.card}
@@ -175,20 +187,21 @@ export default function NewsListScreen() {
           </TouchableOpacity>
         )}
       </View>
+
       <View style={styles.bottomTab}>
+        <HomeIcon width={25} height={25} fill="white" />
         <TouchableOpacity
           onPress={() =>
             router.push({
-              pathname: "/favorites",
+              pathname: "../favorites",
             })
           }
           style={styles.bottomButton}
         >
-          <Text>🎁</Text>
+          <HeartIcon width={25} height={25} fill="white" />
         </TouchableOpacity>
-        <Text>🔍</Text>
-        <Text>🛒</Text>
-        <Text>👤</Text>
+        <SettingIcon width={25} height={25} fill="white" />
+        <BellIcon width={25} height={25} fill="white" />
       </View>
     </>
   );
@@ -202,7 +215,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#1A1A1A",
     padding: 20,
-    height: 240,
+    height: 280,
   },
 
   input: {
@@ -211,24 +224,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#353535",
     borderRadius: 10,
     width: 241,
-    height: 53,
+    height: 55,
     margin: 12,
     padding: 20,
-    top: -40,
-  },
-
-  searchIcon: {
-    fontSize: 12,
-    marginRight: 6,
-  },
-  clearIcon: {
-    fontSize: 12,
-    marginLeft: 8,
-    color: "#666",
+    top: -20,
   },
   searchInput: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 18,
     color: "#000",
   },
 
@@ -239,26 +242,26 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 58,
     height: 53,
-    top: -40,
+    top: -20,
   },
 
   // Серый контейнер поверх главного экрана
   container: {
     position: "absolute",
     zIndex: 10,
-    top: 120,
+    top: 170,
     left: 35,
     right: 35,
     height: 200,
     flex: 1,
-    backgroundColor: "#f2f2f2",
+    // backgroundColor: "#f2f2f2",
     borderRadius: 26,
     justifyContent: "center",
   },
 
   card: {
     backgroundColor: "#fff",
-    height: 200,
+    height: 212,
     borderRadius: 26,
     marginBottom: 12,
     overflow: "hidden",
@@ -279,10 +282,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     padding: 10,
+    // top: 80
   },
 
   CategoryTabs: {
-    top: 80,
+    // top: 80,
+    paddingTop:95,
     paddingVertical: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -290,7 +295,7 @@ const styles = StyleSheet.create({
 
   categoryButton: {
     paddingHorizontal: 15,
-    marginBottom: 10,
+    // marginBottom: 1,
     paddingVertical: 8,
     backgroundColor: "#ddd",
     borderRadius: 8,
@@ -310,12 +315,26 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 
-  productsGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    gap: 20,
+  listContainer: {
+    flex: 1,
+    overflow: "hidden", // 🔥 ВАЖНО
+  },
+
+  listContent: {
+    // paddingTop: 10,
+    paddingBottom: 100,
+  },
+
+  row: {
+    justifyContent: "space-between",
+  },
+
+  cardWrapper: {
+    flex: 1,
+    // paddingVertical: 70,
+    // marginTop: 70,
+    marginBottom: 20,
+    marginHorizontal: 6,
   },
 
   bottomTab: {
