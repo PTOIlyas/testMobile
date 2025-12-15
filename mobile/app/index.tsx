@@ -189,7 +189,9 @@ export default function NewsListScreen() {
       </View>
 
       <View style={styles.bottomTab}>
+
         <HomeIcon width={25} height={25} fill="white" />
+
         <TouchableOpacity
           onPress={() =>
             router.push({
@@ -200,8 +202,20 @@ export default function NewsListScreen() {
         >
           <HeartIcon width={25} height={25} fill="white" />
         </TouchableOpacity>
+
         <SettingIcon width={25} height={25} fill="white" />
-        <BellIcon width={25} height={25} fill="white" />
+
+        <TouchableOpacity
+          onPress={() =>
+            router.push({
+              pathname: "../notifications",
+            })
+          }
+          style={styles.bottomButton}
+        >
+          <BellIcon width={25} height={25} fill="white" />
+        </TouchableOpacity>
+        
       </View>
     </>
   );
