@@ -173,7 +173,6 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 12,
     minHeight: 110,
-    alignItems: "center",
   },
 
   avatar: {

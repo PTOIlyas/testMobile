@@ -98,7 +98,7 @@ export default function NewsListScreen() {
     <>
       <View style={styles.fon}>
         <View style={styles.input}>
-          <SearchIcon width={25} height={25} fill="white" />
+          <SearchIcon width={25} height={25} color="white" />
           <TextInput
             style={styles.searchInput}
             placeholder="Поиск..."
@@ -108,14 +108,14 @@ export default function NewsListScreen() {
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery("")}>
-              <ClearIcon width={25} height={25} fill="white" />
+              <ClearIcon width={25} height={25} color="white" />
             </TouchableOpacity>
           )}
         </View>
 
         {/* Оранжевая кнопка справа от поиска */}
         <View style={styles.filterBox}>
-          <FilterIcon width={30} height={30} fill="white" />
+          <FilterIcon width={30} height={30} color="white" />
         </View>
       </View>
 
@@ -190,7 +190,7 @@ export default function NewsListScreen() {
 
       <View style={styles.bottomTab}>
 
-        <HomeIcon width={25} height={25} fill="white" />
+        <HomeIcon width={25} height={25} color="white" />
 
         <TouchableOpacity
           onPress={() =>
@@ -200,10 +200,10 @@ export default function NewsListScreen() {
           }
           style={styles.bottomButton}
         >
-          <HeartIcon width={25} height={25} fill="white" />
+          <HeartIcon width={25} height={25} color="white" />
         </TouchableOpacity>
 
-        <SettingIcon width={25} height={25} fill="white" />
+        <SettingIcon width={25} height={25} color="white" />
 
         <TouchableOpacity
           onPress={() =>
@@ -213,7 +213,7 @@ export default function NewsListScreen() {
           }
           style={styles.bottomButton}
         >
-          <BellIcon width={25} height={25} fill="white" />
+          <BellIcon width={25} height={25} color="white" />
         </TouchableOpacity>
         
       </View>
@@ -229,7 +229,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#1A1A1A",
     padding: 20,
-    height: 280,
+    height: 300,
+    gap: 5,
   },
 
   input: {
@@ -237,11 +238,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#353535",
     borderRadius: 10,
-    width: 241,
+    width: 260,
     height: 55,
-    margin: 12,
+    margin: 10,
     padding: 20,
-    top: -20,
+    gap: 5,
+    top: -30,
   },
   searchInput: {
     flex: 1,
@@ -256,7 +258,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 58,
     height: 53,
-    top: -20,
+    top: -30,
   },
 
   // Серый контейнер поверх главного экрана
@@ -264,8 +266,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 10,
     top: 170,
-    left: 35,
-    right: 35,
+    left: 25,
+    right: 25,
     height: 200,
     flex: 1,
     // backgroundColor: "#f2f2f2",
@@ -275,16 +277,16 @@ const styles = StyleSheet.create({
 
   card: {
     backgroundColor: "#fff",
-    height: 212,
+    height: 200,
     borderRadius: 26,
     marginBottom: 12,
     overflow: "hidden",
     elevation: 3,
-    shadowColor: "#000",
+    shadowColor: "#1d1d1dff",
     shadowOpacity: 0.2,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
-    borderWidth: 2,
+    borderWidth: 2
   },
 
   image: {
@@ -294,14 +296,14 @@ const styles = StyleSheet.create({
 
   main: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#ffffffff",
     padding: 10,
     // top: 80
   },
 
   CategoryTabs: {
     // top: 80,
-    paddingTop:95,
+    paddingTop:70,
     paddingVertical: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -361,8 +363,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    borderTopWidth: 1,
-    borderTopColor: "#ddd",
   },
 
   bottomButton: {

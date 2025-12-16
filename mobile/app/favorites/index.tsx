@@ -56,7 +56,7 @@ export default function FavoritesScreen() {
               })
             }
           >
-            <ExitIcon width={25} height={25} fill="white" />
+            <ExitIcon width={30} height={30} color="black" />
           </TouchableOpacity>
           <Text style={styles.headertitle}>Избранное</Text>
         </View>
@@ -64,7 +64,7 @@ export default function FavoritesScreen() {
         <View style={styles.input}>
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery("")}>
-              <ClearIcon width={20} height={20} fill="black" />
+              <ClearIcon width={20} height={20} color="black" />
             </TouchableOpacity>
           )}
           <TextInput
@@ -74,8 +74,7 @@ export default function FavoritesScreen() {
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
-          <Text style={styles.searchIcon}>🔍</Text>
-          <SearchIcon width={25} height={25} fill="#424242ff" />
+          <SearchIcon width={30} height={25} color="black" />
         </View>
 
         {/* Category tabs */}
@@ -171,6 +170,7 @@ const styles = StyleSheet.create({
 
   headerBaza: {
     gap: 80,
+    // alignItems: 'center',
     flexDirection: "row",
   },
 

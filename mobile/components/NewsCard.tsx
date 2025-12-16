@@ -12,29 +12,34 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
 
   const openDetail = () => {
     router.push({
-      pathname: '/news/[id]',
+      pathname: "/news/[id]",
       params: { id: encodeURIComponent(article.id) },
     });
-
   };
 
   return (
-    <TouchableOpacity
-      style={styles.productItem}
-      onPress={openDetail}
-    >
+    <TouchableOpacity style={styles.productItem} onPress={openDetail}>
       {article.image && (
-        <Image
-          source={{ uri: article.image }}
-          style={styles.imageProduct}
-        />
+        <Image source={{ uri: article.image }} style={styles.imageProduct} />
       )}
       <View style={styles.textBox}>
-        <Text style={styles.productTitle}>{article.title}</Text>
+        <Text
+          style={styles.productTitle}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {article.title}
+        </Text>
+
+        <TouchableOpacity onPress={openDetail}>
+          <Text style={styles.readMore}>Дальше</Text>
+        </TouchableOpacity>
+
         {article.source.name && article.publishedAt && (
-          <Text style={styles.meta}>
-            {article.source.name} • {article.publishedAt}
-          </Text>
+          <>
+            <Text style={styles.meta}>{article.source.name}</Text>
+            <Text style={styles.meta}>{article.publishedAt}</Text>
+          </>
         )}
       </View>
     </TouchableOpacity>
@@ -43,37 +48,45 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
 
 const styles = StyleSheet.create({
   productItem: {
-    width: 165,
-    height: 280,
-    padding: 10,
-    backgroundColor: "#fff",
+    width: 175,
+    height: 2,
+    padding: 8,
+    backgroundColor: "#ffffffff",
     borderRadius: 16,
-    marginBottom: 15,
+    // marginBottom: 5,
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 4,
+    shadowOpacity: 0.07,
+    shadowRadius: 2,
+    elevation: 2,
   },
 
   imageProduct: {
     width: "100%",
     height: 120,
-    borderRadius: 16,
+    borderRadius: 12,
   },
 
   textBox: {
-    top: 5,
+    top: 8,
+    gap: 2,
     justifyContent: "flex-start",
   },
 
   productTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "bold",
   },
 
+  readMore: {
+    marginTop: 4,
+    fontSize: 12,
+    color: "#B14409",
+    fontWeight: "500",
+  },
+
   meta: {
+    fontSize: 14,
+    marginTop: 4,
     color: "#555",
   },
 });
-
-
