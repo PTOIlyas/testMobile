@@ -8,6 +8,10 @@ import {
   Animated,
 } from "react-native";
 import { ExitIcon, SettingIcon } from "@/assets/icons";
+import { useGetNewsQuery } from "@/store/services/newsApi";
+import { NewsArticle } from "@/types/news";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
 import { router } from "expo-router";
 
 type Notification = {
@@ -18,96 +22,93 @@ type Notification = {
 };
 
 export default function NotificationsScreen() {
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: "1",
-      title: "New article available",
-      description: "Check out the latest sports news",
-      unread: true,
-    },
-    {
-      id: "2",
-      title: "Match result updated",
-      description: "Your favorite team won today",
-      unread: true,
-    },
-    {
-      id: "3",
-      title: "Daily digest",
-      description: "Top stories for you",
-      unread: false,
-    },
-  ]);
 
-  // Создаём Animated.Value для каждой карточки
-  const dotAnimations = useRef(
-    notifications.reduce((acc, item) => {
-      acc[item.id] = new Animated.Value(item.unread ? 1 : 0);
-      return acc;
-    }, {} as { [key: string]: Animated.Value })
-  ).current;
+  const notifications = useSelector(
+    (state: RootState) => state.notifications
+  );
+
+  if (notifications.length === 0) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.emptyText}>Нет уведомлений</Text>
+      </View>
+    );
+  }
+
+  // /* =======================
+  //    НАЖАТИЕ НА УВЕДОМЛЕНИЕ
+  //    ======================= */
+
+  const dotAnimations = useRef<{ [key: string]: Animated.Value }>({}).current;
+
+  // Инициализация анимаций для каждого уведомления
+  notifications.forEach((item) => {
+    if (!dotAnimations[item.id]) {
+      dotAnimations[item.id] = new Animated.Value(item.unread ? 1 : 0);
+    }
+  });
 
   const handlePress = (id: string) => {
-    // Плавное исчезновение dot
     Animated.timing(dotAnimations[id], {
       toValue: 0,
       duration: 300,
       useNativeDriver: true,
     }).start();
-
-    // Обновляем состояние notifications
-    setNotifications((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, unread: false } : item
-      )
-    );
   };
+  
+  // /* =======================
+  //    ПУСТОЕ СОСТОЯНИЕ
+  //    ======================= */
+
+  if (notifications.length === 0) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.emptyText}>Нет уведомлений</Text>
+      </View>
+    );
+  }
+
+  // /* =======================
+  //    ПУСТОЕ СОСТОЯНИЕ
+  //    ======================= */
+  const renderEmpty = () => (
+    <View style={styles.emptyBox}>
+      <Text style={styles.emptyText}>Нет уведомлений</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      {/* HEADER */}
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() =>
-            router.push({
-              pathname: "/",
-            })
-          }
-        >
-          <ExitIcon width={25} height={25} fill="white" />
+        <TouchableOpacity onPress={() => router.push("/")}>
+          <ExitIcon width={25} height={25} fill="black" />
         </TouchableOpacity>
 
         <Text style={styles.title}>Notifications</Text>
-
-        <SettingIcon width={22} height={22} fill="#000" />
+        <SettingIcon width={22} height={22} fill="black" />
       </View>
 
-      {/* Section title */}
       <Text style={styles.section}>Previously</Text>
 
-      {/* List */}
+      {/* LIST */}
       <FlatList
         data={notifications}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 30 }}
+        ListEmptyComponent={renderEmpty}
         renderItem={({ item }) => (
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.card}
             onPress={() => handlePress(item.id)}
           >
-            {/* Avatar */}
             <View style={styles.avatar} />
 
-            {/* Text */}
             <View style={styles.textBlock}>
               <View style={styles.titleRow}>
-                {/* Title */}
-                <View style={styles.notificationTitleContainer}>
-                  <Text style={styles.notificationTitle}>{item.title}</Text>
-                </View>
+                <Text style={styles.notificationTitle}>{item.title}</Text>
 
-                {/* Animated Dot */}
                 {item.unread && (
                   <Animated.View
                     style={[
@@ -118,12 +119,9 @@ export default function NotificationsScreen() {
                 )}
               </View>
 
-              {/* Description */}
-              <View style={styles.notificationDescriptionContainer}>
-                <Text style={styles.notificationDescription}>
-                  {item.description}
-                </Text>
-              </View>
+              <Text style={styles.notificationDescription}>
+                {item.description}
+              </Text>
             </View>
           </TouchableOpacity>
         )}
@@ -138,7 +136,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  /* Header */
   header: {
     height: 70,
     paddingHorizontal: 16,
@@ -147,25 +144,29 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
-    backgroundColor: "#ffffffff",
+    backgroundColor: "#fff",
   },
 
   title: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#000000ff",
+    color: "#000",
   },
 
-  /* Section */
   section: {
     marginTop: 16,
     marginBottom: 8,
     marginLeft: 16,
     fontSize: 16,
-    color: "#4a4a4aff",
+    color: "#4a4a4a",
   },
 
-  /* Card */
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   card: {
     flexDirection: "row",
     backgroundColor: "#f1f1f1",
@@ -189,23 +190,16 @@ const styles = StyleSheet.create({
 
   titleRow: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 5,
-  },
-
-  notificationTitleContainer: {
-    flex: 1,
+    alignItems: "center",
+    marginBottom: 6,
   },
 
   notificationTitle: {
     fontSize: 16,
     fontWeight: "600",
     color: "#000",
-  },
-
-  notificationDescriptionContainer: {
-    marginTop: 4,
+    flex: 1,
   },
 
   notificationDescription: {
@@ -218,5 +212,16 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 6,
     backgroundColor: "#C77A3A",
+    marginLeft: 8,
+  },
+
+  emptyBox: {
+    alignItems: "center",
+    marginTop: 80,
+  },
+
+  emptyText: {
+    fontSize: 16,
+    color: "#999",
   },
 });

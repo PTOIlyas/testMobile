@@ -49,7 +49,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
 const styles = StyleSheet.create({
   productItem: {
     width: 175,
-    height: 2,
+    height: 240,
     padding: 8,
     backgroundColor: "#ffffffff",
     borderRadius: 16,

@@ -12,6 +12,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useGetNewsQuery } from "@/store/services/newsApi";
+import { useDispatch, useSelector } from "react-redux";
+import { addNotifications } from "@/store/notificationsSlice";
+import { RootState } from "@/store";
 import { NewsCard } from "@/components/NewsCard";
 import { NewsArticle } from "@/types/news";
 import { router } from "expo-router";
@@ -50,6 +53,30 @@ export default function NewsListScreen() {
     { key: "politics", label: "Политика" },
     { key: "world", label: "Мир" },
   ];
+
+  const dispatch = useDispatch();
+  const notifications = useSelector((state: RootState) => state.notifications);
+
+  useEffect(() => {
+    if (!data?.articles) return;
+
+    const existingIds = notifications.map((n) => n.articleId).filter(Boolean);
+
+    const newNotifications = data.articles
+      .filter((a) => !existingIds.includes(a.id))
+      .map((a) => ({
+        id: `news-${a.id}`,
+        title: "New article",
+        description: a.title,
+        createdAt: new Date().toISOString(),
+        unread: true,
+        articleId: a.id,
+      }));
+
+    if (newNotifications.length > 0) {
+      dispatch(addNotifications(newNotifications));
+    }
+  }, [data]);
 
   useEffect(() => {
     if (data?.articles) {
@@ -189,7 +216,6 @@ export default function NewsListScreen() {
       </View>
 
       <View style={styles.bottomTab}>
-
         <HomeIcon width={25} height={25} color="white" />
 
         <TouchableOpacity
@@ -215,7 +241,6 @@ export default function NewsListScreen() {
         >
           <BellIcon width={25} height={25} color="white" />
         </TouchableOpacity>
-        
       </View>
     </>
   );
@@ -286,7 +311,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
-    borderWidth: 2
+    borderWidth: 2,
   },
 
   image: {
@@ -303,7 +328,7 @@ const styles = StyleSheet.create({
 
   CategoryTabs: {
     // top: 80,
-    paddingTop:70,
+    paddingTop: 70,
     paddingVertical: 10,
     alignItems: "center",
     justifyContent: "center",
